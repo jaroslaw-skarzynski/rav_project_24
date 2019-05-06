@@ -2,13 +2,13 @@ package pl.sda.rav.domain.vehicles;
 
 import java.time.LocalDate;
 
-public abstract class Vehicle {
+public abstract class Vehicle implements Comparable<Vehicle> {
     private String vin;
-    private String status;
+    private Status status;
     private String name;
     private LocalDate productionDate;
 
-    public Vehicle(String vin, String status, String name, LocalDate productionDate) {
+    public Vehicle(String vin, Status status, String name, LocalDate productionDate) {
         this.vin = vin;
         this.status = status;
         this.name = name;
@@ -19,7 +19,7 @@ public abstract class Vehicle {
         return vin;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -29,5 +29,30 @@ public abstract class Vehicle {
 
     public LocalDate getProductionDate() {
         return productionDate;
+    }
+
+    @Override
+    public int compareTo(Vehicle o) {
+        if(this.productionDate.compareTo(o.getProductionDate()) != 0) {
+            return this.productionDate.compareTo(o.getProductionDate());
+        }
+
+        return this.getName().compareTo(o.getName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vehicle vehicle = (Vehicle) o;
+
+        return vin != null ? vin.equals(vehicle.vin) : vehicle.vin == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return vin != null ? vin.hashCode() : 0;
     }
 }

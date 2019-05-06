@@ -6,7 +6,7 @@ public class Motorboat extends Vehicle{
     private int maxDistance;
     private int displacement;
 
-    public Motorboat(String vin, String status, String name, LocalDate productionDate, int maxDistance, int displacement) {
+    public Motorboat(String vin, Status status, String name, LocalDate productionDate, int maxDistance, int displacement) {
         super(vin, status, name, productionDate);
         this.maxDistance = maxDistance;
         this.displacement = displacement;
