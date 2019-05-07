@@ -2,20 +2,22 @@ package pl.sda.rav.domain.vehicles;
 
 import java.time.LocalDate;
 
-public class Motorboat extends Vehicle{
-    private int maxDistance;
+public class Motorboat extends Vehicle implements SwimmingVehicle {
+    private int maxDistanceMiles;
     private int displacement;
 
-    public Motorboat(String vin, Status status, String name, LocalDate productionDate, int maxDistance, int displacement) {
+    public Motorboat(String vin, Status status, String name, LocalDate productionDate, int maxDistanceMiles, int displacement) {
         super(vin, status, name, productionDate);
-        this.maxDistance = maxDistance;
+        this.maxDistanceMiles = maxDistanceMiles;
         this.displacement = displacement;
     }
 
-    public int getMaxDistance() {
-        return maxDistance;
+    @Override
+    public int getMaxDistanceMiles() {
+        return maxDistanceMiles;
     }
 
+    @Override
     public int getDisplacement() {
         return displacement;
     }
@@ -23,7 +25,7 @@ public class Motorboat extends Vehicle{
     @Override
     public String toString() {
         return "Motorboat{" +
-                "maxDistance=" + maxDistance +
+                "maxDistanceMiles=" + maxDistanceMiles +
                 ", displacement=" + displacement +
                 ", vin='" + getVin() + '\'' +
                 ", status='" + getStatus() + '\'' +

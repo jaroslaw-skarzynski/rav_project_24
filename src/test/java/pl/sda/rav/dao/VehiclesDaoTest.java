@@ -93,4 +93,81 @@ class VehiclesDaoTest {
         assertFalse(removed);
         assertEquals(5, vehicles.size());
     }
+
+    @Test
+    public void shouldFindOnlyDrivingVehicles() {
+        // given
+        SearchParameters searchParameters = new SearchParametersForDriving();
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(amphibian, fordKuga, toyotaYaris), vehicles);
+    }
+
+    @Test
+    public void shouldFindOnlySwimmingVehicles() {
+        // given
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.setCategory(VehicleCategory.SWIMMING);
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(amphibian, nightCruiser, sunFlower), vehicles);
+    }
+
+    @Test
+    public void shouldFindOnlyAvailableVehicles() {
+        // given
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.setStatus(VehicleStatus.AVAILABLE);
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(fordKuga, sunFlower, toyotaYaris), vehicles);
+    }
+
+    @Test
+    public void shouldFindOnlyYoungVehicles() {
+        // given
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.setAge(VehicleAge.YOUNG);
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(fordKuga, sunFlower, toyotaYaris), vehicles);
+    }
+
+    @Test
+    public void shouldFindOnlyHatchbacks() {
+        // given
+        SearchParametersForDriving searchParameters = new SearchParametersForDriving();
+        searchParameters.setBodyType(BodyType.HATCHBACK);
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(toyotaYaris), vehicles);
+    }
+
+    @Test
+    public void shouldFindOnlyVehiclesWithCertainDisplacement() {
+        // given
+        SearchParametersForSwimming searchParameters = new SearchParametersForSwimming();
+        searchParameters.setDisplacementFrom(5);
+
+        // when
+        Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
+
+        // then
+        assertIterableEquals(Arrays.asList(amphibian, sunFlower), vehicles);
+    }
 }

@@ -2,7 +2,7 @@ package pl.sda.rav.domain.vehicles;
 
 import java.time.LocalDate;
 
-public class Amphibian extends Vehicle {
+public class Amphibian extends Vehicle implements SwimmingVehicle, DrivingVehicle {
     private int maxDistanceKm;
     private int maxDistanceMiles;
     private int displacement;
@@ -14,16 +14,24 @@ public class Amphibian extends Vehicle {
         this.displacement = displacement;
     }
 
+    @Override
     public int getMaxDistanceKm() {
         return maxDistanceKm;
     }
 
+    @Override
     public int getMaxDistanceMiles() {
         return maxDistanceMiles;
     }
 
+    @Override
     public int getDisplacement() {
         return displacement;
+    }
+
+    @Override
+    public BodyType getBodyType() {
+        return BodyType.AMPHIBIAN;
     }
 
     @Override

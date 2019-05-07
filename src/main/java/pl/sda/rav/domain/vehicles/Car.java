@@ -2,7 +2,7 @@ package pl.sda.rav.domain.vehicles;
 
 import java.time.LocalDate;
 
-public class Car extends Vehicle {
+public class Car extends Vehicle implements DrivingVehicle {
     private int maxDistance;
     private BodyType bodyType;
 
@@ -12,10 +12,12 @@ public class Car extends Vehicle {
         this.bodyType = bodyType;
     }
 
-    public int getMaxDistance() {
+    @Override
+    public int getMaxDistanceKm() {
         return maxDistance;
     }
 
+    @Override
     public BodyType getBodyType() {
         return bodyType;
     }
