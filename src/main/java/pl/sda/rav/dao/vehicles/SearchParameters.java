@@ -1,9 +1,11 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.vehicles;
+
+import pl.sda.rav.domain.Period;
 
 public class SearchParameters {
     private VehicleCategory category;
-    private VehicleStatus status;
     private VehicleAge age;
+    private Period periodToCheck;
 
     public void setCategory(VehicleCategory category) {
         this.category = category;
@@ -17,18 +19,6 @@ public class SearchParameters {
         return category != null;
     }
 
-    public void setStatus(VehicleStatus status) {
-        this.status = status;
-    }
-
-    public VehicleStatus getStatus() {
-        return status;
-    }
-
-    public boolean hasStatus() {
-        return status != null;
-    }
-
     public void setAge(VehicleAge age) {
         this.age = age;
     }
@@ -39,5 +29,17 @@ public class SearchParameters {
 
     public boolean hasAge() {
         return age != null;
+    }
+
+    public void setPeriodToCheck(Period periodToCheck) {
+        this.periodToCheck = periodToCheck;
+    }
+
+    public Period getPeriodToCheck() {
+        return periodToCheck;
+    }
+
+    public boolean hasPeriodToCheck() {
+        return periodToCheck != null;
     }
 }

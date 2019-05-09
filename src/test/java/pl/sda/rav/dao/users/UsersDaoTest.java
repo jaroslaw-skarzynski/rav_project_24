@@ -1,7 +1,8 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.users;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.sda.rav.UsersSamples;
 import pl.sda.rav.domain.users.User;
 import pl.sda.rav.domain.users.UserType;
 
@@ -10,20 +11,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UsersDaoTest {
+public class UsersDaoTest {
     private UsersDao usersDao;
-    private User mietek = new User("mietek", "tajne_haslo", UserType.CUSTOMER);
-    private User adam = new User("adam", "moje_haslo-", UserType.ADMIN);
-    private User ewa = new User("ewa", "th", UserType.ADMIN);
-    private User zofia = new User("zofia", "sekretne_hasło", UserType.CUSTOMER);
 
     @BeforeEach
     void setUp() {
         usersDao = new UsersDao();
-        usersDao.add(mietek);
-        usersDao.add(zofia);
-        usersDao.add(ewa);
-        usersDao.add(adam);
+        usersDao.add(UsersSamples.MIETEK);
+        usersDao.add(UsersSamples.ZOFIA);
+        usersDao.add(UsersSamples.EWA);
+        usersDao.add(UsersSamples.ADAM);
     }
 
     @Test
@@ -33,7 +30,7 @@ class UsersDaoTest {
         Set<User> users = usersDao.getUsers();
 
         // then
-        assertIterableEquals(Arrays.asList(zofia, mietek, ewa, adam), users);
+        assertIterableEquals(Arrays.asList(UsersSamples.ZOFIA, UsersSamples.MIETEK, UsersSamples.EWA, UsersSamples.ADAM), users);
     }
 
     @Test
@@ -54,7 +51,7 @@ class UsersDaoTest {
     @Test
     public void shouldNotAddDuplicateUser() {
         // given
-        User newUser = new User(adam.getLogin(), "has_6", UserType.CUSTOMER);
+        User newUser = new User(UsersSamples.ADAM.getLogin(), "has_6", UserType.CUSTOMER);
 
         // when
         boolean added = usersDao.add(newUser);
@@ -69,17 +66,17 @@ class UsersDaoTest {
     public void shouldRemoveExistingUser() {
         // given
         // when
-        boolean removed = usersDao.remove(zofia.getLogin());
+        boolean removed = usersDao.remove(UsersSamples.ZOFIA.getLogin());
         assertTrue(removed);
-        removed = usersDao.remove(ewa.getLogin());
+        removed = usersDao.remove(UsersSamples.EWA.getLogin());
         assertTrue(removed);
 
         Set<User> users = usersDao.getUsers();
 
         // then
         assertEquals(2, users.size());
-        assertFalse(users.contains(ewa));
-        assertFalse(users.contains(zofia));
+        assertFalse(users.contains(UsersSamples.EWA));
+        assertFalse(users.contains(UsersSamples.ZOFIA));
     }
 
     @Test

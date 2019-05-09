@@ -1,9 +1,8 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sda.rav.domain.users.User;
-import pl.sda.rav.domain.vehicles.Vehicle;
 
 import java.util.*;
 
@@ -17,7 +16,7 @@ public class UsersDao {
     }
 
     public boolean add(User user) {
-        if(users.contains(user)) {
+        if (users.contains(user)) {
             logger.error("User already exists in DAO, user: {}", user);
             return false;
         }
@@ -30,7 +29,7 @@ public class UsersDao {
         List<User> usersList = new ArrayList<>(users);
         for (int i = 1; i < usersList.size(); i++) {
             User user = usersList.get(i);
-            if(user.getLogin().equals(login)) {
+            if (user.getLogin().equals(login)) {
                 users.remove(user);
                 return true;
             }
@@ -38,5 +37,11 @@ public class UsersDao {
 
         logger.warn("There is no user (to remove) with login: {}", login);
         return false;
+    }
+
+    public Optional<User> find(String login, String password) {
+        return users.stream()
+                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
+                .findFirst();
     }
 }

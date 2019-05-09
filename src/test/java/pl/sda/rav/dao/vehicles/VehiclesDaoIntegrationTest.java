@@ -1,7 +1,10 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.vehicles;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.sda.rav.VehiclesSamples;
+import pl.sda.rav.dao.orders.OrdersDao;
+import pl.sda.rav.domain.Period;
 import pl.sda.rav.domain.vehicles.*;
 
 import java.time.LocalDate;
@@ -11,22 +14,17 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VehiclesDaoTest {
+public class VehiclesDaoIntegrationTest {
     private VehiclesDao vehiclesDao;
-    private Car fordKuga = new Car("CAR-123C", Status.AVAILABLE, "Ford Kuga", LocalDate.of(2017, Month.JANUARY, 1), 800, BodyType.SUV);
-    private Car toyotaYaris = new Car("CAR-155A", Status.AVAILABLE, "Toyota Yaris", LocalDate.of(2018, Month.JANUARY, 1), 400, BodyType.HATCHBACK);
-    private Motorboat sunFlower = new Motorboat("MOT-120", Status.AVAILABLE, "Sun Flower 100", LocalDate.of(2018, Month.JANUARY, 1), 1000, 10);
-    private Motorboat nightCruiser = new Motorboat("MOT-123", Status.IN_REPAIR, "Night Cruiser", LocalDate.of(2015, Month.NOVEMBER, 1), 500, 4);
-    private Amphibian amphibian = new Amphibian("AMP-123", Status.RENT, "AmfiB 2000", LocalDate.of(2010, Month.APRIL, 10), 200, 1000, 5);
 
     @BeforeEach
     void setUp() {
-        vehiclesDao = new VehiclesDao();
-        vehiclesDao.add(fordKuga);
-        vehiclesDao.add(toyotaYaris);
-        vehiclesDao.add(nightCruiser);
-        vehiclesDao.add(amphibian);
-        vehiclesDao.add(sunFlower);
+        vehiclesDao = new VehiclesDao(new OrdersDao());
+        vehiclesDao.add(VehiclesSamples.FORD_KUGA);
+        vehiclesDao.add(VehiclesSamples.TOYOTA_YARIS);
+        vehiclesDao.add(VehiclesSamples.NIGHT_CRUISER);
+        vehiclesDao.add(VehiclesSamples.AMPHIBIAN);
+        vehiclesDao.add(VehiclesSamples.SUN_FLOWER);
     }
 
     @Test
@@ -37,13 +35,13 @@ class VehiclesDaoTest {
 
         // then
         assertEquals(5, vehicles.size());
-        assertIterableEquals(Arrays.asList(amphibian, nightCruiser, fordKuga, sunFlower, toyotaYaris), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.AMPHIBIAN, VehiclesSamples.NIGHT_CRUISER, VehiclesSamples.FORD_KUGA, VehiclesSamples.SUN_FLOWER, VehiclesSamples.TOYOTA_YARIS), vehicles);
     }
 
     @Test
     public void shouldAddAnotherVehicle() {
         // given
-        Vehicle newVehicle = new Motorboat("MOT-456", Status.AVAILABLE, "SunShine-2", LocalDate.of(2019, Month.NOVEMBER, 1), 650, 10);
+        Vehicle newVehicle = new Motorboat("MOT-456", "SunShine-2", LocalDate.of(2019, Month.NOVEMBER, 1), 650, 10);
 
         // when
         boolean added = vehiclesDao.add(newVehicle);
@@ -58,7 +56,7 @@ class VehiclesDaoTest {
     @Test
     public void shouldNotAddDuplicateVehicle() {
         // given
-        Vehicle newVehicle = new Motorboat(nightCruiser.getVin(), Status.AVAILABLE, "SunShine-2", LocalDate.of(2019, Month.NOVEMBER, 1), 650, 10);
+        Vehicle newVehicle = new Motorboat(VehiclesSamples.NIGHT_CRUISER.getVin(), "SunShine-2", LocalDate.of(2019, Month.NOVEMBER, 1), 650, 10);
 
         // when
         boolean added = vehiclesDao.add(newVehicle);
@@ -73,13 +71,13 @@ class VehiclesDaoTest {
     public void shouldRemoveExistingVehicle() {
         // given
         // when
-        boolean removed = vehiclesDao.remove(fordKuga.getVin());
+        boolean removed = vehiclesDao.remove(VehiclesSamples.FORD_KUGA.getVin());
         Set<Vehicle> vehicles = vehiclesDao.getVehicles();
 
         // then
         assertTrue(removed);
         assertEquals(4, vehicles.size());
-        assertFalse(vehicles.contains(fordKuga));
+        assertFalse(vehicles.contains(VehiclesSamples.FORD_KUGA));
     }
 
     @Test
@@ -103,7 +101,7 @@ class VehiclesDaoTest {
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(amphibian, fordKuga, toyotaYaris), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.AMPHIBIAN, VehiclesSamples.FORD_KUGA, VehiclesSamples.TOYOTA_YARIS), vehicles);
     }
 
     @Test
@@ -116,20 +114,22 @@ class VehiclesDaoTest {
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(amphibian, nightCruiser, sunFlower), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.AMPHIBIAN, VehiclesSamples.NIGHT_CRUISER, VehiclesSamples.SUN_FLOWER), vehicles);
     }
 
     @Test
     public void shouldFindOnlyAvailableVehicles() {
         // given
         SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setStatus(VehicleStatus.AVAILABLE);
+        LocalDate startDate = LocalDate.of(2019, Month.JULY, 1);
+        LocalDate endDate = LocalDate.of(2019, Month.JULY, 10);
+        searchParameters.setPeriodToCheck(new Period(startDate, endDate));
 
         // when
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(fordKuga, sunFlower, toyotaYaris), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.FORD_KUGA, VehiclesSamples.SUN_FLOWER, VehiclesSamples.TOYOTA_YARIS), vehicles);
     }
 
     @Test
@@ -142,7 +142,7 @@ class VehiclesDaoTest {
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(fordKuga, sunFlower, toyotaYaris), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.FORD_KUGA, VehiclesSamples.SUN_FLOWER, VehiclesSamples.TOYOTA_YARIS), vehicles);
     }
 
     @Test
@@ -155,7 +155,7 @@ class VehiclesDaoTest {
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(toyotaYaris), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.TOYOTA_YARIS), vehicles);
     }
 
     @Test
@@ -168,6 +168,6 @@ class VehiclesDaoTest {
         Set<Vehicle> vehicles = vehiclesDao.searchVehicles(searchParameters);
 
         // then
-        assertIterableEquals(Arrays.asList(amphibian, sunFlower), vehicles);
+        assertIterableEquals(Arrays.asList(VehiclesSamples.AMPHIBIAN, VehiclesSamples.SUN_FLOWER), vehicles);
     }
 }

@@ -6,8 +6,8 @@ public class Car extends Vehicle implements DrivingVehicle {
     private int maxDistance;
     private BodyType bodyType;
 
-    public Car(String vin, Status status, String name, LocalDate productionDate, int maxDistance, BodyType bodyType) {
-        super(vin, status, name, productionDate);
+    public Car(String vin, String name, LocalDate productionDate, int maxDistance, BodyType bodyType) {
+        super(vin, name, productionDate);
         this.maxDistance = maxDistance;
         this.bodyType = bodyType;
     }
@@ -28,7 +28,6 @@ public class Car extends Vehicle implements DrivingVehicle {
                 "maxDistance=" + maxDistance +
                 ", bodyType=" + bodyType +
                 ", vin='" + getVin() + '\'' +
-                ", status='" + getStatus() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", productionDate=" + getProductionDate() +
                 '}';

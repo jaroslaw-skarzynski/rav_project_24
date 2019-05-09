@@ -1,4 +1,4 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.vehicles;
 
 public class SearchParametersForSwimming extends SearchParameters {
     private Integer displacementFrom;

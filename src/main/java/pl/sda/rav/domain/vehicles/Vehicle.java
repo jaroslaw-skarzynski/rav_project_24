@@ -4,23 +4,17 @@ import java.time.LocalDate;
 
 public abstract class Vehicle implements Comparable<Vehicle> {
     private String vin;
-    private Status status;
     private String name;
     private LocalDate productionDate;
 
-    public Vehicle(String vin, Status status, String name, LocalDate productionDate) {
+    public Vehicle(String vin, String name, LocalDate productionDate) {
         this.vin = vin;
-        this.status = status;
         this.name = name;
         this.productionDate = productionDate;
     }
 
     public String getVin() {
         return vin;
-    }
-
-    public Status getStatus() {
-        return status;
     }
 
     public String getName() {

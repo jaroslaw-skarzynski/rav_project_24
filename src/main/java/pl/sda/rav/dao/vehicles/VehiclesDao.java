@@ -1,7 +1,9 @@
-package pl.sda.rav.dao;
+package pl.sda.rav.dao.vehicles;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.sda.rav.dao.orders.OrdersDao;
+import pl.sda.rav.domain.Period;
 import pl.sda.rav.domain.vehicles.*;
 
 import java.time.LocalDate;
@@ -14,6 +16,11 @@ public class VehiclesDao {
     private final Logger logger = LoggerFactory.getLogger(VehiclesDao.class);
 
     private Set<Vehicle> vehicles = new HashSet<>();
+    private OrdersDao ordersDao;
+
+    public VehiclesDao(OrdersDao ordersDao) {
+        this.ordersDao = ordersDao;
+    }
 
     public Set<Vehicle> getVehicles() {
         return vehicles;
@@ -28,8 +35,8 @@ public class VehiclesDao {
                 }
             }
 
-            if(searchParameters.hasStatus()) {
-                if(!isVehicleOfStatus(vehicle, searchParameters.getStatus())) {
+            if(searchParameters.hasPeriodToCheck()) {
+                if(!isVehicleOfStatus(vehicle, searchParameters.getPeriodToCheck())) {
                     continue;
                 }
             }
@@ -102,15 +109,8 @@ public class VehiclesDao {
         }
     }
 
-    private boolean isVehicleOfStatus(Vehicle vehicle, VehicleStatus status) {
-        switch (status) {
-            case AVAILABLE:
-                return vehicle.getStatus().isAvailable();
-            case UNAVAILABLE:
-                return !vehicle.getStatus().isAvailable();
-            default:
-                return false;
-        }
+    private boolean isVehicleOfStatus(Vehicle vehicle, Period period) {
+        return ordersDao.isAvailable(vehicle.getVin(), period);
     }
 
     private boolean isVehicleOfAge(Vehicle vehicle, VehicleAge age) {

@@ -1,9 +1,8 @@
 package pl.sda.rav.domain.orders;
 
+import pl.sda.rav.domain.Period;
 import pl.sda.rav.domain.users.User;
 import pl.sda.rav.domain.vehicles.Vehicle;
-
-import java.time.LocalDateTime;
 
 public class Order {
     private static int COUNT = 0;
@@ -11,14 +10,13 @@ public class Order {
     private int id;
     private User customer;
     private Vehicle vehicle;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Period period;
 
-    public Order(User customer, Vehicle vehicle, LocalDateTime startDate) {
+    public Order(User customer, Vehicle vehicle, Period period) {
         this.id = COUNT++;
         this.customer = customer;
         this.vehicle = vehicle;
-        this.startDate = startDate;
+        this.period = period;
     }
 
     public int getId() {
@@ -33,16 +31,8 @@ public class Order {
         return vehicle;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public Period getPeriod() {
+        return period;
     }
 
     @Override
@@ -51,8 +41,7 @@ public class Order {
                 "id=" + id +
                 ", customer=" + customer +
                 ", vehicle=" + vehicle +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", period=" + period +
                 '}';
     }
 }

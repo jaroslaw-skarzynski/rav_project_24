@@ -7,8 +7,8 @@ public class Amphibian extends Vehicle implements SwimmingVehicle, DrivingVehicl
     private int maxDistanceMiles;
     private int displacement;
 
-    public Amphibian(String vin, Status status, String name, LocalDate productionDate, int maxDistanceKm, int maxDistanceMiles, int displacement) {
-        super(vin, status, name, productionDate);
+    public Amphibian(String vin, String name, LocalDate productionDate, int maxDistanceKm, int maxDistanceMiles, int displacement) {
+        super(vin, name, productionDate);
         this.maxDistanceKm = maxDistanceKm;
         this.maxDistanceMiles = maxDistanceMiles;
         this.displacement = displacement;
@@ -41,7 +41,6 @@ public class Amphibian extends Vehicle implements SwimmingVehicle, DrivingVehicl
                 ", maxDistanceMiles=" + maxDistanceMiles +
                 ", displacement=" + displacement +
                 ", vin='" + getVin() + '\'' +
-                ", status='" + getStatus() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", productionDate=" + getProductionDate() +
                 '}';
