@@ -34,7 +34,9 @@ public class OrdersDao {
 
     public boolean orderVehicle(User user, Vehicle vehicle, Period period) {
         Order order = new Order(user, vehicle, period);
-        orders.add(order);
+        if (isAvailable(vehicle.getVin(),period)) {
+            orders.add(order);
+        }
         return true;
     }
 
