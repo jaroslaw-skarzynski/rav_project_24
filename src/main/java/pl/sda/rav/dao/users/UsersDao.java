@@ -17,9 +17,15 @@ public class UsersDao {
     }
 
     public boolean add(User user) {
-        if (users.contains(user)) {
-            logger.error("User already exists in DAO, user: {}", user);
-            return false;
+//        if (users.contains(user)) {
+//            logger.error("User already exists in DAO, user: {}", user);
+//            return false;
+//        }
+        for (User user1 : users) {
+            if(user1.getLogin().equals(user.getLogin())){
+                logger.error("User already exists in DAO, user: {}", user);
+                return false;
+            }
         }
 
         users.add(user);
