@@ -41,6 +41,7 @@ public class OrdersDao {
     public List<Order> getOrdersByUser(User user) {
         return orders.stream()
                 .filter(order -> order.getCustomer().getLogin().equals(user.getLogin()))
+                .sorted(Comparator.comparing(order -> order.getPeriod().getStartDate()))
                 .collect(Collectors.toList());
     }
 
