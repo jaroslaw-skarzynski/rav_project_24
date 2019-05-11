@@ -36,7 +36,7 @@ public class OrdersDaoTest {
 
         // when
         ordersDao.orderVehicle(UsersSamples.ADAM, VehiclesSamples.FORD_KUGA, new Period(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 1)));
-        ordersDao.orderVehicle(UsersSamples.ADAM, VehiclesSamples.FORD_KUGA, new Period(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 1)));
+
 
         // then
         Set<Order> orders = ordersDao.getOrders();
