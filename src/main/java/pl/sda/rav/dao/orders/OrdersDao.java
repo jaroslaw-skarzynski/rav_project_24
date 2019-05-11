@@ -34,14 +34,20 @@ public class OrdersDao {
 
     public boolean orderVehicle(User user, Vehicle vehicle, Period period) {
         Order order = new Order(user, vehicle, period);
-        orders.add(order);
-        return true;
+        if (isAvailable(vehicle.getVin(), period)) {
+            orders.add(order);
+            return true;
+        }
+        return false;
     }
 
     public List<Order> getOrdersByUser(User user) {
-        return orders.stream()
+        List<Order> client = new ArrayList<>();
+              client=  orders.stream()
                 .filter(order -> order.getCustomer().getLogin().equals(user.getLogin()))
                 .collect(Collectors.toList());
+              client.sort(((o1, o2) -> o1.getPeriod().getStartDate().compareTo(o2.getPeriod().getStartDate())));
+    return client;
     }
 
     public Map<User, List<Order>> getUserOrderMap() {
