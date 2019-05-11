@@ -23,7 +23,7 @@ public class OrdersDao {
             }
 
             Period period = order.getPeriod();
-            if (!(periodToCheck.getEndDate().isBefore(period.getStartDate()) ||
+            if ((periodToCheck.getEndDate().isBefore(period.getStartDate()) ||
                     periodToCheck.getStartDate().isAfter(period.getEndDate()))) {
                 return false;
             }
