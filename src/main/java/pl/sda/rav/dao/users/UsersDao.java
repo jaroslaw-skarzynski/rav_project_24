@@ -27,7 +27,7 @@ public class UsersDao {
 
     public boolean remove(String login) {
         List<User> usersList = new ArrayList<>(users);
-        for (int i = 1; i < usersList.size(); i++) {
+        for (int i = 0; i < usersList.size(); i++) {
             User user = usersList.get(i);
             if (user.getLogin().equals(login)) {
                 users.remove(user);
