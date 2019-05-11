@@ -36,7 +36,7 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User o) {
-        Comparator<User> userComparator = Comparator.comparing(User::getLogin);
+        Comparator<User> userComparator = Comparator.comparing(User::getLogin).reversed();
         return userComparator.compare(this, o);
     }
 

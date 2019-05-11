@@ -12,6 +12,7 @@ public class UsersDao {
     private Set<User> users = new HashSet<>();
 
     public Set<User> getUsers() {
+
         return new TreeSet<>(users);
     }
 
